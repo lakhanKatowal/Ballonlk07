@@ -1,0 +1,95 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html>
+<head>
+<title>Birthday Wish</title>
+
+</head>
+<body>
+
+<h1 id="wish" onclick="createBalloon()">Happy Birthday! Click me!</h1>
+<div id="balloonContainer"></div>
+<div id="message"></div>
+
+
+</body>
+</html>
+<style><style>
+    body {
+        background-color: #87CEEB;
+        text-align: center;
+        font-family: Arial;
+        margin: 0;
+        overflow: hidden; /* Hide scrollbars if balloons go off-screen */
+    }
+    .balloon {
+        width: 50px;
+        height: 60px;
+        border-radius: 50%;
+        position: absolute;
+        bottom: -70px; /* Start below the visible area */
+        animation: float 5s ease-in-out infinite, ascend 10s linear forwards;
+        cursor: pointer;
+    }
+    @keyframes float {
+        0%, 100% { transform: translateX(0); }
+        50% { transform: translateX(-10px); }
+    }
+    @keyframes ascend {
+        to { bottom: 110vh; } /* Move off the top of the screen */
+    }
+    #wish {
+        font-size: 40px;
+        color: yellow;
+        text-shadow: 2px 2px pink;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+    #message {
+        font-size: 30px;
+        color: white;
+        margin-top: 20px;
+    }
+</style><script><script>
+    const colors = ['red', 'blue', 'green', 'purple', 'orange', 'pink'];
+    const container = document.getElementById('balloonContainer');
+
+    // Function to create a new balloon
+    function createBalloon() {
+        const balloon = document.createElement('div');
+        balloon.classList.add('balloon');
+        balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        // Random horizontal position
+        balloon.style.left = Math.random() * (window.innerWidth - 50) + 'px'; 
+        balloon.onclick = function() { popBalloon(balloon); };
+        container.appendChild(balloon);
+
+        // Remove balloon after animation finishes (10s as per CSS)
+        setTimeout(() => {
+            if (balloon.parentNode) {
+                balloon.parentNode.removeChild(balloon);
+            }
+        }, 10000); 
+    }
+
+    // Function to "pop" a balloon when clicked
+    function popBalloon(balloon) {
+        balloon.style.backgroundColor = 'transparent';
+        balloon.style.border = '2px dashed white';
+        balloon.style.animation = 'none'; // Stop floating and ascending
+        balloon.style.transform = 'scale(1.2)';
+        
+        // Remove after a short delay to simulate pop effect
+        setTimeout(() => {
+            if (balloon.parentNode) {
+                balloon.parentNode.removeChild(balloon);
+            }
+        }, 300);
+        
+        // Display a message (optional)
+        document.getElementById('message').textContent = 'Pop!';
+        setTimeout(() => {
+            document.getElementById('message').textContent = '';
+        }, 500);
+    }
+
+</script>
